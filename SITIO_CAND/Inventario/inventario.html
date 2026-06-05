@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario TECNOCAND</title>
+    <link rel="stylesheet" href="styleinventario.css">
+</head>
+<body>
+    <div class="container">
+        <h1>💻 Inventario de Equipos y Partes</h1>
+        
+        <form id="inventory-form">
+            <select id="name">
+                <option value="Dell">DELL</option>
+                <option value="HP">HP</option>
+                <option value="ASUS">ASUS</option>
+                <option value="ACER">ACER</option>
+                <option value="LENOVO">LENOVO</option>
+                <option value="NEXXT">NEXXT</option>
+                <option value="HUAWEI">HUAWEI</option>
+                <option value="APPLE">APPLE</option>
+                <option value="CISCO">CISCO</option>
+                <option value="APPLE">APPLE</option>
+            <input type="text" id="model" placeholder="Modelo del producto" required>
+            <select id="category">
+                <option value="Laptop">Portátil</option>
+                <option value="Desktop">Escritorio</option>
+                <option value="Redes">Accesorios de Red</option>
+                <option value="Partes">Partes / Componentes</option>
+            </select>
+            <input type="number" id="price" placeholder="Precio ($)" required>
+            <input type="number" id="stock" placeholder="Cantidad" required>
+            <button type="submit">Agregar al Inventario</button>
+        </form>
+
+        <div class="table-wrapper">
+            <table id="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los productos aparecerán aquí -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script_inventario2.js"></script>
+</body>
+</html>
