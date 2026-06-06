@@ -1,0 +1,69 @@
+Lo que necesitas pedirle a tu compañero
+
+Tu compañero debe proporcionarte los siguientes datos de su base de datos:
+IP Pública o IP Local: Si están en la misma casa/oficina conectados al mismo Wi-Fi, 
+necesita darte su IP local (ej. 192.168.1.15). Si están en casas diferentes, 
+necesitarán usar una herramienta como Ngrok, Hamachi, o abrir puertos en su router para 
+darte su IP pública.Usuario y Contraseña: El usuario de MySQL (comúnmente root u otro 
+personalizado) y su contraseña.Nombre de la base de datos: El nombre exacto de la base de 
+datos del proyecto.Puerto: Normalmente es el 3306.
+
+⚠️ Nota importante para tu compañero: Él debe configurar su MySQL para permitir conexiones 
+remotas. Por defecto, MySQL bloquea conexiones externas. Debe asegurarse de que su usuario 
+tenga permisos para conectarse desde cualquier host ('usuario'@'%').
+
+Para conectar sus computadoras mediante LogMeIn Hamachi y enlazar la base de datos MySQL, 
+sigan este paso a paso detallado para ambos.
+
+1: Descarga e Instalación (Ambos)Los dos deben realizar este paso en sus respectivas 
+computadoras:Entren al sitio web oficial de LogMeIn Hamachi y descarguen la versión gratuita 
+para Windows.Ejecuten el instalador, elijan el idioma Español y sigan el asistente 
+(pueden omitir cualquier oferta de software adicional).Al finalizar, se abrirá una pequeña 
+ventana. Den clic en el botón de encendido (icono de Power).Les pedirá iniciar sesión. 
+Si no tienen cuenta, den clic en Registrarse y creen una con su correo electrónico.🖥️ 
+
+PASO 2: Crear la Red (Tu Compañero - El que tiene la Base de Datos)Tu compañero debe ser el 
+"servidor" de la red virtual:En su ventana de Hamachi, debe dar clic en Crear una nueva red.
+ID de red: Debe inventar un nombre único (ej. proyecto_sitio_cand).Contraseña: 
+Una clave sencilla que recuerde.Dar clic en Crear. Ahora verá el nombre de la red en su 
+pantalla.🙋‍♂️ 
+
+PASO 3: Unirse a la Red (Tú - El Colaborador)Ahora tú te conectarás a su red 
+virtual:En tu ventana de Hamachi, ve al menú superior y selecciona Red > Unirse a una red 
+existente.Introduce el ID de red y la Contraseña que creó tu compañero.Da clic en Unirse.
+Verificación: Si todo sale bien, verás el nombre de la computadora de tu compañero con un 
+círculo verde al lado.🔐 
+
+PASO 4: Configurar MySQL para permitir la conexión (Tu Compañero)Por defecto, MySQL bloquea 
+conexiones externas (incluso las de Hamachi). Tu compañero debe hacer lo siguiente en su MySQL
+ Workbench o terminal:
+ 
+ Debe ejecutar este comando para otorgar permisos a tu conexión 
+ (reemplazando tu_usuario y tu_contraseña por los datos reales del proyecto):
+ 
+ sql
+ 
+ CREATE USER 'tu_usuario'@'%' IDENTIFIED BY 'tu_contraseña';
+GRANT ALL PRIVILEGES ON nombre_de_tu_base_datos.* TO 'tu_usuario'@'%';
+FLUSH PRIVILEGES;
+
+
+(El % significa que le permite conectarse desde cualquier IP, incluyendo la de Hamachi).
+ 
+
+PASO 5: Cambiar el código en Node.js (Tú)Abre tu ventana de Hamachi, busca el nombre de la 
+computadora de tu compañero, dale clic derecho y selecciona Copiar dirección IPv4 
+(será una IP que empieza con 25.x.x.x).
+Ve al código de tu proyecto 
+Node.js (en tu archivo .env o donde configures la conexión) y cambia el host actual por esa IP:
+
+javascript
+
+// Ejemplo de configuración en tu código
+const connection = mysql.createConnection({
+  host: '25.XX.XX.XX', // <-- AQUÍ PEGAS LA IP DE HAMACHI DE TU COMPAÑERO
+  user: 'tu_usuario',
+  password: 'tu_contraseña',
+  database: 'SITIO_CAND'
+});
+Una vez hechos estos pasos, ejecuta npm start en tu terminal y el error debería desaparecer.
