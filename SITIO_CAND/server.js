@@ -6,6 +6,38 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// ============================================
+// RUTAS PROTEGIDAS (ANTES DE express.static)
+// ============================================
+
+// Login Admin - Credenciales hardcodeadas por seguridad
+app.post('/admin/login', (req, res) => {
+  const { nombre, password } = req.body;
+  
+  // Credenciales admin (en producción usar BD)
+  const ADMIN_USER = process.env.ADMIN_USER || 'admin';
+  const ADMIN_PASS = process.env.ADMIN_PASS || 'admin123';
+  
+  if (nombre === ADMIN_USER && password === ADMIN_PASS) {
+    const token = Math.random().toString(36).substr(2, 9);
+    res.json({ 
+      ok: true, 
+      token: token,
+      user: nombre,
+      mensaje: 'Login exitoso'
+    });
+  } else {
+    res.status(401).json({ 
+      ok: false, 
+      mensaje: 'Usuario o contraseña incorrectos' 
+    });
+  }
+});
+
+// ============================================
+// ARCHIVOS ESTÁTICOS
+// ============================================
 app.use(express.static(__dirname));
 
 const db = mySql.createConnection({
@@ -44,7 +76,11 @@ app.post('/login', (req, res) => {
          res.json({ ok: false, mensaje: 'Usuario o contraseña incorrectos' });
       }
     });
-  });
+});
+
+// Login Admin - Credenciales hardcodeadas por seguridad
+// NOTA: Ruta movida al inicio del archivo ANTES de express.static
+// No eliminar, solo comentada la duplicada
 
 app.post('/pedidos', (req, res) => {
   const { usuario_id, total, productos } = req.body;
@@ -98,9 +134,34 @@ app.get('/pedidos', (req, res) => {
 });
 
 app.get('/usuarios', (req, res) => {
-  db.query('SELECT id, nombre FROM usuarios', (err, result) => {
+  db.query('SELECT id, nombre, email, telefono FROM usuarios', (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(result);
+  });
+});
+
+app.post('/usuarios', (req, res) => {
+  const { nombre, email, telefono, password } = req.body;
+  db.query('INSERT INTO usuarios (nombre, email, telefono, password) VALUES (?, ?, ?, ?)',
+    [nombre, email, telefono, password], (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ ok: true, id: result.insertId });
+    });
+});
+
+app.put('/usuarios/:id', (req, res) => {
+  const { nombre, email, telefono, password } = req.body;
+  db.query('UPDATE usuarios SET nombre = ?, email = ?, telefono = ?, password = ? WHERE id = ?',
+    [nombre, email, telefono, password, req.params.id], (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ ok: true });
+    });
+});
+
+app.delete('/usuarios/:id', (req, res) => {
+  db.query('DELETE FROM usuarios WHERE id = ?', [req.params.id], (err) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json({ ok: true });
   });
 });
 
