@@ -1,5 +1,5 @@
 // Admin Login JavaScript
-const API_URL = 'http://localhost:3000';
+const API_URL = '';
 
 // ============================================
 // 1. TOGGLE PASSWORD VISIBILITY
