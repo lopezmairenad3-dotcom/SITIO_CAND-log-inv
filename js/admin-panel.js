@@ -478,9 +478,5 @@ document.getElementById('btn-logout').addEventListener('click', () => {
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
     verificarAutenticacion();
-    loadDashboard();
+    loadDashboard();    
 });
-   
- 
-
-// deploy 06/28/2026 11:27:21
