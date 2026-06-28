@@ -111,27 +111,37 @@ function actualizarTotal()
 
 botonComprar.addEventListener("click", comprarCarrito);
 
-  //funcion para que funcione el boton comprar
+// funcion para q funcione el boton comprar
   function comprarCarrito() {
-      const total = productosEnCarrito.reduce((acc, p) => acc + (p.precio * p.cantidad), 0);
-      
-      fetch('http://localhost:3000/pedidos', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ usuario_id: 1, total, productos: productosEnCarrito }) 
-      })
-      .then(res => res.json())
-      .then(datos => {
-          if (datos.ok) {
-              productosEnCarrito.length = 0;
-              localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
-              contenedorCarritoVacio.classList.add("disabled");
-              contenedorCarritoProductos.classList.add("disabled");
-              contenedorCarritoAcciones.classList.add("disabled");
-              contenedorCarritoComprado.classList.remove("disabled");
-          }
-      });
-  }        
+  const total = productosEnCarrito.reduce((acc, p) => acc + (p.precio * p.cantidad), 0);
+
+  // Obtener el método de pago seleccionado
+  const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked') 
+                        ? document.querySelector('input[name="paymentMethod"]:checked').value 
+                        : 'efectivo';
+
+  fetch('http://localhost:3000/pedidos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      usuario_id: 1, 
+      total, 
+      productos: productosEnCarrito,
+      paymentMethod: paymentMethod 
+    })
+  })
+  .then(res => res.json())
+  .then(datos => {
+    if (datos.ok) {
+      productosEnCarrito.length = 0;
+      localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+      contenedorCarritoVacio.classList.add("disabled");
+      contenedorCarritoProductos.classList.add("disabled");
+      contenedorCarritoAcciones.classList.add("disabled");
+      contenedorCarritoComprado.classList.remove("disabled");
+    }
+  });
+}     
 
   
     

@@ -77,10 +77,27 @@
                     <div class="carrito-acciones-total">
                         <p>Total:</p>
                         <p id="total">$25</p>
+                        
                     </div>
-                    <button id="carrito-acciones-comprar" class="carrito-acciones-comprar">Comprar ahora</button>
+
+                                    <!-- === FORMAS DE PAGO === -->
+                <div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #ddd;">
+                  <h4 style="margin-bottom: 12px;">Forma de pago</h4>
+                  
+                  <label style="display: block; margin: 10px 0; font-size: 16px; cursor: pointer;">
+                    <input type="radio" name="paymentMethod" value="efectivo" checked style="margin-right: 8px;">
+                    💵 <strong>Pago en Efectivo</strong> (al recibir el pedido)
+                  </label>
+                  
+                  <label style="display: block; margin: 10px 0; font-size: 16px; cursor: pointer;">
+                    <input type="radio" name="paymentMethod" value="tarjeta" style="margin-right: 8px;">
+                    💳 <strong>Tarjeta de Crédito / Débito</strong>
+                  </label>
                 </div>
+
+                    <button id="carrito-acciones-comprar" class="carrito-acciones-comprar">Comprar ahora</button>
             </div>
+        </div>
             <p id="carrito-comprado" class="carrito-comprado disabled">
                 Muchas Gracias por su compra! <i class="bi bi-emoji-smile"></i>
              </p>
