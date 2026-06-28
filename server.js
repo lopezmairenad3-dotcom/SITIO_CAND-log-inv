@@ -39,6 +39,7 @@ app.post('/admin/login', (req, res) => {
 // ARCHIVOS ESTÁTICOS
 // ============================================
 app.use(express.static(__dirname));
+app.get('/', (req, res) => res.sendFile(__dirname + '/Index.html'));
 
 const db = mySql.createConnection({
     host: process.env.DB_HOST,
